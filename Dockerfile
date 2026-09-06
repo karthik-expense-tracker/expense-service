@@ -8,8 +8,10 @@ RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:8-jre
 WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
+RUN adduser --system appuser
 
+COPY --from=builder /app/target/*.jar app.jar
+USER appuser
 
 
 CMD ["java", "-jar", "app.jar"]
