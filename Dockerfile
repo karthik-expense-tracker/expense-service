@@ -13,5 +13,7 @@ RUN adduser --system appuser
 COPY --from=builder /app/target/*.jar app.jar
 USER appuser
 
+EXPOSE 8000
+
 
 CMD ["java", "-jar", "app.jar"]
