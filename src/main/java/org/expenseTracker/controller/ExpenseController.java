@@ -16,24 +16,46 @@ public class ExpenseController {
     ExpenseService expenseService;
 
     @GetMapping("/get-expenses")
-    public @NonNull List<Expense> getExpenses() {
-        return expenseService.getExpenses();
+    public @NonNull ResponseEntity<?> getExpenses() {
+        try {
+            List<Expense> expenses = expenseService.getExpenses();
+            return ResponseEntity.ok(expenses);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(500).body("server error");
+        }
     }
 
     @PostMapping("/add-expense")
-    public @NonNull Expense addExpense(@RequestBody Expense expense) {
-        return expenseService.addExpense(expense);
+    public ResponseEntity<?> addExpense(@RequestBody Expense expense) {
+        try {
+            Expense savedExpense = expenseService.addExpense(expense);
+            return ResponseEntity.ok(savedExpense);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(500).body("server error");
+        }
     }
 
     @PostMapping("/update-expense/{id}")
-    public @NonNull Expense updateExpense(@PathVariable Long id, @RequestBody Expense expense) {
-        return expenseService.updateExpense(id, expense);
+    public @NonNull ResponseEntity<?> updateExpense(@PathVariable Long id, @RequestBody Expense expense) {
+        try {
+            Expense updatedExpense = expenseService.updateExpense(id, expense);
+            return ResponseEntity.ok(updatedExpense);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Expense not found");
+        }
     }
 
     @DeleteMapping("/delete-expense/{id}")
     public ResponseEntity<String> deleteExpense(@PathVariable Long id) {
-        expenseService.deleteExpense(id);
-        return ResponseEntity.ok("Expense deleted successfully");
+        try {
+            expenseService.deleteExpense(id);
+            return ResponseEntity.ok("Expense deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(500).body("server error");
+        }
     }
 
 }
