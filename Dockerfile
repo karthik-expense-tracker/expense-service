@@ -15,5 +15,4 @@ USER appuser
 
 EXPOSE 8000
 
-
 CMD ["java", "-jar", "app.jar"]
