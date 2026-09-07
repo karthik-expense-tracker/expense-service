@@ -24,7 +24,7 @@ public class ExpenseController {
         this.expenseService = expenseService;
     }
 
-    @GetMapping("/get-expenses")
+    @GetMapping("/all-expenses")
     public @NonNull ResponseEntity<?> getExpenses() {
         try {
             List<Expense> expenses = expenseService.getExpenses();
@@ -36,7 +36,7 @@ public class ExpenseController {
         }
     }
 
-    @PostMapping("/add-expense")
+    @PostMapping("/create-expense")
     public ResponseEntity<?> addExpense(@RequestBody Expense expense) {
         try {
             validator.validateExpenseDetails(expense);

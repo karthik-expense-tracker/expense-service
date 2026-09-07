@@ -60,7 +60,7 @@ public class ExpenseControllerTest {
         Expense e2 = createExpense(2L, "Travel", 1200, "15-02-2026", "credit");
         when(expenseService.getExpenses()).thenReturn(Arrays.asList(e1, e2));
 
-        mockMvc.perform(get("/get-expenses"))
+        mockMvc.perform(get("/all-expenses"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].category").value("Food"))
                 .andExpect(jsonPath("$[0].amount").value(500))
@@ -72,7 +72,7 @@ public class ExpenseControllerTest {
     public void getExpenses_error() throws Exception {
         when(expenseService.getExpenses()).thenThrow(new RuntimeException("db error"));
 
-        mockMvc.perform(get("/get-expenses"))
+        mockMvc.perform(get("/all-expenses"))
                 .andExpect(status().isInternalServerError());
     }
 
@@ -82,7 +82,7 @@ public class ExpenseControllerTest {
         Expense saved = createExpense(1L, "Food", 500, "01-01-2026", "debit");
         when(expenseService.addExpense(any())).thenReturn(saved);
 
-        mockMvc.perform(post("/add-expense")
+        mockMvc.perform(post("/create-expense")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(input)))
                 .andExpect(status().isOk())
@@ -96,7 +96,7 @@ public class ExpenseControllerTest {
         doThrow(new InvalidAmountInExpense("Invalid amount in expense"))
                 .when(validator).validateExpenseDetails(any());
 
-        mockMvc.perform(post("/add-expense")
+        mockMvc.perform(post("/create-expense")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isBadRequest())
@@ -108,7 +108,7 @@ public class ExpenseControllerTest {
         doThrow(new InvalidDate("Future dates are not allowed"))
                 .when(validator).validateExpenseDetails(any());
 
-        mockMvc.perform(post("/add-expense")
+        mockMvc.perform(post("/create-expense")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isBadRequest())
@@ -120,7 +120,7 @@ public class ExpenseControllerTest {
         doThrow(new InvalidDate("Invalid date, expected format dd-MM-yyyy"))
                 .when(validator).validateExpenseDetails(any());
 
-        mockMvc.perform(post("/add-expense")
+        mockMvc.perform(post("/create-expense")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isBadRequest())
@@ -132,7 +132,7 @@ public class ExpenseControllerTest {
         doThrow(new InvalidExpenseType("Invalid expense type accepts only credit or debit"))
                 .when(validator).validateExpenseDetails(any());
 
-        mockMvc.perform(post("/add-expense")
+        mockMvc.perform(post("/create-expense")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isBadRequest())
@@ -143,7 +143,7 @@ public class ExpenseControllerTest {
     public void addExpense_error() throws Exception {
         when(expenseService.addExpense(any())).thenThrow(new RuntimeException("save failed"));
 
-        mockMvc.perform(post("/add-expense")
+        mockMvc.perform(post("/create-expense")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isInternalServerError());

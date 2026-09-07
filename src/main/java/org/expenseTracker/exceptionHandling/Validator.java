@@ -1,10 +1,13 @@
 package org.expenseTracker.exceptionHandling;
 
 import org.expenseTracker.entity.Expense;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+@Component
 
 public class Validator{
     private static final DateTimeFormatter EXPENSE_DATE_FORMAT =
