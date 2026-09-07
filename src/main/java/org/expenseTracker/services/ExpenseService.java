@@ -3,6 +3,7 @@ package org.expenseTracker.services;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.expenseTracker.entity.Expense;
+import org.expenseTracker.exceptionHandling.ExpenseNotFound;
 import org.expenseTracker.repository.ExpenseRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,9 @@ public class ExpenseService {
         return expenseRepository.save(expense);
     }
 
-    public Expense updateExpense(Long id, Expense expense) {
+    public Expense updateExpense(Long id, Expense expense) throws ExpenseNotFound {
         Expense existingExpense = expenseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Expense not found"));
+                .orElseThrow(() -> new ExpenseNotFound("Expense not found"));
 
         existingExpense.setAmount(expense.getAmount());
         existingExpense.setCategory(expense.getCategory());

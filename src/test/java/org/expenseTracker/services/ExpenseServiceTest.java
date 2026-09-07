@@ -1,6 +1,7 @@
 package org.expenseTracker.services;
 
 import org.expenseTracker.entity.Expense;
+import org.expenseTracker.exceptionHandling.ExpenseNotFound;
 import org.expenseTracker.repository.ExpenseRepository;
 import org.junit.jupiter.api.Test;
 
@@ -59,7 +60,7 @@ public class ExpenseServiceTest {
     }
 
     @Test
-    public void testUpdateExpenseSuccess() {
+    public void testUpdateExpenseSuccess() throws ExpenseNotFound {
         Long id = 1L;
         Expense existingExpense = new Expense();
         existingExpense.setId(id);
@@ -88,11 +89,11 @@ public class ExpenseServiceTest {
     }
 
     @Test
-    public void testUpdateExpenseNotFound() {
+    public void testUpdateExpenseNotFound() throws ExpenseNotFound {
         Long id = 99L;
         when(expenseRepository.findById(id)).thenReturn(Optional.empty());
 
-        RuntimeException ex = assertThrows(RuntimeException.class,
+        ExpenseNotFound ex = assertThrows(ExpenseNotFound.class,
                 () -> expenseService.updateExpense(id, new Expense()));
         assertEquals("Expense not found", ex.getMessage());
     }
