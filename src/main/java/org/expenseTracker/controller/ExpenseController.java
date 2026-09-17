@@ -1,7 +1,6 @@
 package org.expenseTracker.controller;
 
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.expenseTracker.entity.Expense;
 import org.expenseTracker.exceptionHandling.*;
 import org.expenseTracker.services.ExpenseService;
