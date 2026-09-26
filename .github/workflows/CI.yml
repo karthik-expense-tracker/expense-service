@@ -25,9 +25,9 @@ jobs:
 
       - name: build and test
         run: mvn clean package
-
-      - name: SonarQube Scan
-        uses: kitabisa/sonarqube-action@v1.2.0
+        
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602
         with:
           host: ${{ secrets.SONARQUBE_HOST }}
           login: ${{ secrets.SONARQUBE_TOKEN }}
