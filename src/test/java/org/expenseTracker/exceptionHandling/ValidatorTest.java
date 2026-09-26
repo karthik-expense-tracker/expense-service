@@ -1,7 +1,6 @@
 package org.expenseTracker.exceptionHandling;
 
 import org.expenseTracker.entity.Expense;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
